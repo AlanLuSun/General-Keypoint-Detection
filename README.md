@@ -88,19 +88,19 @@ Now the project layout should look like as follows:
 |   |-- experiments/
 |   |-- MegaKPT/
 |   |-- network/
-|   |-- output
-|   |   |-- GKDT-L_for_app
-|   |   |   |-- model
+|   |-- output/
+|   |   |-- GKDT-L_for_app/
+|   |   |   |-- model/
 |   |   |   |   |-- gkd_fullset.best
-|   |-- test_real_world
-|   |   |-- configs
-|   |   |-- gkd_inference_lib
-|   |   |-- object_detor_lib
-|   |   |   |-- groundingdino
-|   |   |   |-- weights
+|   |-- test_real_world/
+|   |   |-- configs/
+|   |   |-- gkd_inference_lib/
+|   |   |-- object_detor_lib/
+|   |   |   |-- groundingdino/
+|   |   |   |-- weights/
 |   |   |   |   |-- LocateAnything-3B
 |   |   |   |   |-- groundingdino_swint_ogc.pth
-|   |   |-- scripts
+|   |   |-- scripts/
 |   |   ...
 |   |-- utils/
 ...
