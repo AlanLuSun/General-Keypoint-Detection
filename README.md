@@ -12,7 +12,8 @@ We release two sets of GKDT models. One is trained using the entire MegaKPT data
 ### 2.1 For real-world testing & Application (Results across 22 datasets' test sets; 1000 episodes; PCK@0.1 )
 
 
-### 2.2 For research (Results across 22 datasets' test sets; 1000 episodes; PCK@0.1 )
+### 2.2 For research 
+Results across 22 datasets' test sets with 1000 episodes and metric PCK@0.1:
 |        |Prompt|Animal|AwA  |CUB  |NABird|AP-10K|Vinegar fly|Locust|Mourse5k|Macaque|Tiger|Animal Kin.|COCO val|HumanArt|300W |Ani.Web|OneHand|HInt |Keypoint-5|CarFusion|D.Fashion2|Cephalo|Hand X-ray|
 |--------|:----:|:----:|:---:|-----|:----:|:----:|:---------:|:----:|:------:|:-----:|:---:|:---------:|:------:|:------:|:---:|:-----:|:-----:|:---:|:--------:|:-------:|:--------:|:-----:|:--------:|
 |GKDT-L  |visual|81.11 |84.64|97.71|96.25 |89.25 |97.59      |98.66 |96.40   |88.82  |92.33|90.74      |88.64   |82.92   |96.99|82.54  |92.56  |69.79|83.01     |94.15    |90.96     |99.46  |99.28     |
