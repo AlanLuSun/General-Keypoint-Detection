@@ -96,6 +96,7 @@ Now the project layout should look like as follows:
 |   |   |-- configs
 |   |   |-- gkd_inference_lib
 |   |   |-- object_detor_lib
+|   |   |   |-- groundingdino
 |   |   |   |-- weights
 |   |   |   |   |-- LocateAnything-3B
 |   |   |   |   |-- groundingdino_swint_ogc.pth
