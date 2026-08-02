@@ -2,7 +2,7 @@
 ## 1. Introduction
 - This is the source code implementation for the ECCV 2026 paper [GKDT: General Keypoint Detection Transformer](https://arxiv.org/pdf/2607.00752)
 - The major contributions of this work are in two aspects: 1) We present ***a powerful yet highly practical foundation model, called GKDT, to handle general keypoint detection***. GKDT supports visual prompt, text prompt, and both, enabling few-shot, zero-shot, and multimodal prompted detection. GKDT is open-world, thus it also supports continual learning. To our best knowledge, GKDT is the first DINOv3 based model for general keypoint detection (GKD); 2) We present ***a large-scale high-quality dataset MegaKPT that unifies 29 public datasets with over 1.3 million object instances*** for the research of general keypoint detection.
-- The source codes, models, and dataset is free for academic research, while commercial use is prohibited. Please cite our paper if you find them helpful, thank you!
+- The source codes, models, and dataset are free for academic research, while commercial use is prohibited. Please cite our paper if you find them helpful, thank you!
 
 <!-- # We are working on releasing the dataset, models, and codes. We will release them within 1~2 weeks. Thanks for your patience and stay tuned! (2026.07.15) -->
 
@@ -10,7 +10,7 @@
 ## 2. Released GKDT Models
 We release two sets of GKDT models. One is trained using the entire MegaKPT dataset (including training, validation and/or test sets of each component dataset) to pursue great performance for real-world testing and applications; Another set is only trained by the combination of training sets of each component dataset for the purpose of research. The model variants GKDT-L (default model in our paper) and GKDT-H use the DINOv3-L and DINOv3-H visual backbones, respectively.
  
-### 2.1 For real-world testing & Application
+### 2.1 For real-world testing & application
 Results across 22 datasets' test sets with 1000 episodes and metric PCK@0.1:
 |        |Prompt|Animal|AwA  |CUB  |NABird|AP-10K|Vinegar fly|Locust|Mourse5k|Macaque|Tiger|Animal Kin.|COCO val|HumanArt|300W |Ani.Web|OneHand|HInt |Keypoint-5|CarFusion|D.Fashion2|Cephalo|Hand X-ray|
 |--------|:----:|:----:|:---:|-----|:----:|:----:|:---------:|:----:|:------:|:-----:|:---:|:---------:|:------:|:------:|:---:|:-----:|:-----:|:---:|:--------:|:-------:|:--------:|:-----:|:--------:|
@@ -38,12 +38,97 @@ Download for research: [GKDT-L](https://huggingface.co/changshenglu/GKDT-L_for_R
 
 
 ## 3. Environment Setup
+Our codes rely minimal dependancy on other python packages such as pytorch and opencv. Please follow below four steps strictly to steup the environment:
 
+Step 1: Create a virtual environment (let us assume `gkd_env`) in anaconda.
+```
+conda create --name gkd_env python=3.10.4
+```
 
+Step 2: Ensure there is an GPU in your computer with the CUDA toolkit installed.
 
+Step 3: Activate `gkd_env`, and install [pytorch](https://pytorch.org/get-started/previous-versions/) (compatible to your GPU devices) and opencv. In this example, I install pytorch for CUDA version 11.8
+```
+conda activate gkd_env
+pip3 install torch==2.7.0 torchvision==0.22.0 torchaudio==2.7.0 --index-url https://download.pytorch.org/whl/cu118
+pip3 install opencv-contrib-python
+```
+
+Step 4: Install other packages listed in `requirements.txt`
+```
+pip3 install -r requirements.txt
+``` 
+
+Now you should have one working environment! 
+
+If you met `ModuleNotFoundError: No module named 'pkg_resources'`, lower setuptools version by `pip3 install setuptools==78.1.1`. Everything should be fine.
 
 
 ## 4. Real-World Testing & Applications
+
+### 4.1 Download Models
+Assume the path of current working directory is `General-Keypoint-Detection/`:
+
+- Download the [GKDT-L model](https://huggingface.co/changshenglu/GKDT-L_for_App/tree/main) and put it to `output/GKDT-L_for_app/model/gkd_fullset.best`
+
+- Go to folder `test_real_world/object_detor_lib/weights`, and then download open-set object detectors [Grounding DINO](https://github.com/idea-research/groundingdino) and [Locate Anything](https://github.com/NVlabs/Eagle/tree/main/Embodied) by
+```
+wget -q https://github.com/IDEA-Research/GroundingDINO/releases/download/v0.1.0-alpha/groundingdino_swint_ogc.pth
+git lfs install
+git clone https://huggingface.co/nvidia/LocateAnything-3B
+```
+
+Now the project layout should look like as follows:
+```
+|-- General-Keypoint-Detection
+|   |-- core/
+|   |-- datasets/
+|   |-- evaluation_metric/
+|   |-- evaluation_related/
+|   |-- experiments/
+|   |-- MegaKPT/
+|   |-- network/
+|   |-- output
+|   |   |-- GKDT-L_for_app
+|   |   |   |-- model
+|   |   |   |   |-- gkd_fullset.best
+|   |-- test_real_world
+|   |   |-- configs
+|   |   |-- gkd_inference_lib
+|   |   |-- object_detor_lib
+|   |   |   |-- weights
+|   |   |   |   |-- LocateAnything-3B
+|   |   |   |   |-- groundingdino_swint_ogc.pth
+|   |   |-- scripts
+|   |   ...
+|   |-- utils/
+...
+```
+
+### 4.2 Single-object General Keypoint Detection
+Some detection examples are shown in `test_real_world/scripts/eval_single_obj_gkd.sh`. The meaning of input parameters are detailed in `test_real_world/single_obj_gkd_inference.py`.
+
+Below we demonstrate some examples for single-object GKD. Please navigate to path `General-Keypoint-Detection/`.
+
+For multimodal prompted, we run
+```
+python3 test_real_world/single_obj_gkd_inference.py \
+    --cfg_file /project/vonneumann1/cl2025/GKD_github/test_real_world/configs/gkd.yaml \
+    --checkpoint /project/vonneumann1/cl2025/GKD/output/gkd_ablation/main5_fullset_run/fullset_kg_blk2/model/gkd_fullset.best \
+    --input_im /project/vonneumann1/cl2025/GKD_github/test_real_world/ims1/2007_007524.jpg \
+    --bbox_on_input_im \
+    --obj_type '' \
+    --kps_texts 'left eye' 'right eye' 'nose' \
+    --support_im /project/vonneumann1/cl2025/GKD_github/test_real_world/ims1/alpaca_150.jpg \
+    --support_kps 615 495 483 493 521 549 \
+    --skeleton 1 2 1 3 2 3
+```
+
+
+
+### 4.3 Multi-object General Keypoint Detection
+
+
 
 
 
