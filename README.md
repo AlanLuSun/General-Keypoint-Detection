@@ -34,7 +34,7 @@ Results across 22 datasets' test sets with 1000 episodes and metric PCK@0.1:
 |        |text  |74.01 |93.91|98.83|97.20 |92.53 |99.11      |99.49 |96.68   |94.09  |96.32|95.13      |94.15   |91.51   |99.35|87.63  |96.41  |83.47|88.50     |96.90    |95.77     |99.73  |99.90     |
 |        |both  |76.62 |92.57|98.73|97.14 |92.02 |99.01      |99.38 |96.61   |93.52  |95.85|94.69      |94.18   |90.81   |99.12|87.43  |96.14  |82.16|87.51     |96.51    |94.96     |99.72  |99.92     |
 
-Download for research: [GKDT-L](https://huggingface.co/changshenglu/GKDT-L_for_Research) | [GKDT-H](https://huggingface.co/changshenglu/GKDT-H_for_Research)
+Download for research: [GKDT-L](https://huggingface.co/changshenglu/GKDT-L_for_Research/tree/main) | [GKDT-H](https://huggingface.co/changshenglu/GKDT-H_for_Research/tree/main)
 
 
 ## 3. Environment Setup
