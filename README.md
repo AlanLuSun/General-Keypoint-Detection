@@ -172,6 +172,7 @@ Given text prompts `nose, left eye, right eye, left ear, right ear`, the detecti
   </tr>
 </table>
 
+
 **Example 3: Multimodal prompted detection**
 ```
 python3 test_real_world/single_obj_gkd_inference.py \
@@ -183,6 +184,7 @@ python3 test_real_world/single_obj_gkd_inference.py \
     --support_kps 343 166 281 158 311 197 \
     --skeleton 1 2 1 3 2 3
 ```
+
 
 **Example 4: Cross-object prompted detection**
 ```
@@ -205,6 +207,41 @@ python3 test_real_world/single_obj_gkd_inference.py \
     </td>
   </tr>
 </table>
+
+
+**Example 4: Detection using predefined names**
+
+Detect keypoints on chair image
+```
+python3 test_real_world/single_obj_gkd_inference.py \
+    --cfg_file test_real_world/configs/gkd.yaml \
+    --checkpoint output/GKDT-L_for_app/model/gkd_fullset.best \
+    --input_im test_real_world/ims1/00000016.jpg \
+    --obj_type 'chair' 
+```
+
+Detect keypoints on hand x-ray image
+```
+python3 test_real_world/single_obj_gkd_inference.py \
+    --cfg_file test_real_world/configs/gkd.yaml \
+    --checkpoint output/GKDT-L_for_app/model/gkd_fullset.best \
+    --input_im test_real_world/ims1/3144.png \
+    --obj_type 'hand_xray' 
+```
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="./assets/SO_example5_00000016.jpg" width="96%">
+    </td>
+    <td align="center" width="50%">
+      <img src="./assets/SO_example5_3144.png" width="100%">
+    </td>
+  </tr>
+</table>
+
+You can also enrich the predefined keypoint texts in `test_real_world/predefined_keypoints.py` by yourselves!
+
 
 ### 4.3 Multi-object General Keypoint Detection
 
