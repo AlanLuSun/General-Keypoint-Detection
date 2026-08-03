@@ -77,6 +77,7 @@ wget -q https://github.com/IDEA-Research/GroundingDINO/releases/download/v0.1.0-
 git lfs install
 git clone https://huggingface.co/nvidia/LocateAnything-3B
 ```
+Note that object detectors are only used in multi-object GKD scenario. If you only do single-object GKD, object detectors are no need to download.
 
 Now the project layout should look like as follows:
 ```
@@ -109,23 +110,101 @@ Now the project layout should look like as follows:
 ### 4.2 Single-object General Keypoint Detection
 Some detection examples are shown in `test_real_world/scripts/eval_single_obj_gkd.sh`. The meaning of input parameters are detailed in `test_real_world/single_obj_gkd_inference.py`.
 
-Below we demonstrate some examples for single-object GKD. Please navigate to path `General-Keypoint-Detection/`.
+Below we demonstrate some examples for single-object GKD. Please navigate to the path of `General-Keypoint-Detection/`.
 
-For multimodal prompted, we run
+
+
+**Example 1: Visual prompted detection**
 ```
 python3 test_real_world/single_obj_gkd_inference.py \
-    --cfg_file /project/vonneumann1/cl2025/GKD_github/test_real_world/configs/gkd.yaml \
-    --checkpoint /project/vonneumann1/cl2025/GKD/output/gkd_ablation/main5_fullset_run/fullset_kg_blk2/model/gkd_fullset.best \
-    --input_im /project/vonneumann1/cl2025/GKD_github/test_real_world/ims1/2007_007524.jpg \
-    --bbox_on_input_im \
-    --obj_type '' \
+    --cfg_file test_real_world/configs/gkd.yaml \
+    --checkpoint output/GKDT-L_for_app/model/gkd_fullset.best \
+    --input_im test_real_world/ims1/2007_007524.jpg \
+    --support_im test_real_world/ims1/2007_003778.jpg \
+    --support_kps 343 166 281 158 311 197 \
+    --skeleton 1 2 1 3 2 3
+```
+Given visual prompt (i.e., support image with marked left eye, right eye and nose keypoints), the detection result is
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="./assets/SO_example1_1_2007_003778.jpg" width="80%">
+    </td>
+    <td align="center">
+      <img src="./assets/SO_example1_2007_007524.jpg" width="100%">
+    </td>
+  </tr>
+</table>
+
+
+**Example 2: Text prompted detection**
+
+Detect keypoints in the window of entire image:
+```
+python3 test_real_world/single_obj_gkd_inference.py \
+    --cfg_file test_real_world/configs/gkd.yaml \
+    --checkpoint output/GKDT-L_for_app/model/gkd_fullset.best \
+    --input_im test_real_world/ims1/2007_007524.jpg \
+    --kps_texts 'nose' 'left eye' 'right eye' 'left ear' 'right ear' \
+    --skeleton 1 2 1 3 2 3 2 4 3 5
+```
+Or detect keypoints in an ROI:
+```
+python3 test_real_world/single_obj_gkd_inference.py \
+    --cfg_file test_real_world/configs/gkd.yaml \
+    --checkpoint output/GKDT-L_for_app/model/gkd_fullset.best \
+    --input_im test_real_world/ims1/2007_007524.jpg \
+    --bbox_on_input_im 33 38 241 310 \
+    --kps_texts 'nose' 'left eye' 'right eye' 'left ear' 'right ear' \
+    --skeleton 1 2 1 3 2 3 2 4 3 5
+```
+Given text prompts `nose, left eye, right eye, left ear, right ear`, the detection results are:
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="./assets/SO_example2_2007_007524.jpg" width="100%">
+    </td>
+    <td align="center">
+      <img src="./assets/SO_example2-2_2007_007524.jpg" width="100%">
+    </td>
+  </tr>
+</table>
+
+**Example 3: Multimodal prompted detection**
+```
+python3 test_real_world/single_obj_gkd_inference.py \
+    --cfg_file test_real_world/configs/gkd.yaml \
+    --checkpoint output/GKDT-L_for_app/model/gkd_fullset.best \
+    --input_im test_real_world/ims1/2007_007524.jpg \
     --kps_texts 'left eye' 'right eye' 'nose' \
-    --support_im /project/vonneumann1/cl2025/GKD_github/test_real_world/ims1/alpaca_150.jpg \
-    --support_kps 615 495 483 493 521 549 \
+    --support_im test_real_world/ims1/2007_003778.jpg \
+    --support_kps 343 166 281 158 311 197 \
     --skeleton 1 2 1 3 2 3
 ```
 
+**Example 4: Cross-object prompted detection**
+```
+python3 test_real_world/single_obj_gkd_inference.py \
+    --cfg_file test_real_world/configs/gkd.yaml \
+    --checkpoint output/GKDT-L_for_app/model/gkd_fullset.best \
+    --input_im test_real_world/ims1/2007_007524.jpg \
+    --kps_texts 'left eye' 'right eye' 'nose' \
+    --support_im test_real_world/ims1/alpaca_150.jpg \
+    --support_kps 615 495 483 493 521 549
+```
 
+<table>
+  <tr>
+    <td align="center">
+      <img src="./assets/SO_example4_alpaca_150.jpg" width="80%">
+    </td>
+    <td align="center">
+      <img src="./assets/SO_example4_2007_007524.jpg" width="100%">
+    </td>
+  </tr>
+</table>
 
 ### 4.3 Multi-object General Keypoint Detection
 
