@@ -209,7 +209,7 @@ python3 test_real_world/single_obj_gkd_inference.py \
 </table>
 
 
-**Example 4: Detection using predefined names**
+**Example 5: Detection using predefined names**
 
 Detect keypoints on chair image
 ```
