@@ -108,7 +108,7 @@ Now the project layout should look like as follows:
 |   ...
 ```
 
-### 4.2 Single-object General Keypoint Detection
+### 4.2 Single-Object General Keypoint Detection
 Some detection examples are shown in `test_real_world/scripts/eval_single_obj_gkd.sh`. The meaning of input parameters are detailed in `test_real_world/single_obj_gkd_inference.py`.
 
 Below we demonstrate some examples for single-object GKD. Please navigate to the path of `General-Keypoint-Detection/`.
@@ -244,7 +244,7 @@ python3 test_real_world/single_obj_gkd_inference.py \
 You can also enrich the predefined keypoint texts in `test_real_world/predefined_keypoints.py` by yourselves!
 
 
-### 4.3 Multi-object General Keypoint Detection
+### 4.3 Multi-Object General Keypoint Detection
 Please check the detection examples in `test_real_world/scripts/eval_multi_obj_gkd.sh`. The meaning of input parameters are detailed in `test_real_world/multi_obj_gkd_inference.py`.
 
 Go to path of `General-Keypoint-Detection/` and then follow below commands to conduct some detections.
