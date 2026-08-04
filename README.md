@@ -209,7 +209,7 @@ python3 test_real_world/single_obj_gkd_inference.py \
 </table>
 
 
-**Example 5: Detection using predefined names**
+**Example 5: Detection by retrieving predefined names**
 
 Detect keypoints on chair image
 ```
@@ -244,8 +244,109 @@ You can also enrich the predefined keypoint texts in `test_real_world/predefined
 
 
 ### 4.3 Multi-object General Keypoint Detection
+Please check the detection examples in `test_real_world/scripts/eval_multi_obj_gkd.sh`. The meaning of input parameters are detailed in `test_real_world/multi_obj_gkd_inference.py`.
+
+Go to path of `General-Keypoint-Detection/` and then follow below commands to conduct some detections.
+
+**Example 1: Detection on quadrupedal animals given keypoint texts**
+
+Detecting keypoints using object detector LocateAnything model
+```
+python3 test_real_world/multi_obj_gkd_inference.py \
+    --cfg_file test_real_world/configs/gkd.yaml \
+    --checkpoint output/GKDT-L_for_app/model/gkd_fullset.best \
+    --input_im test_real_world/ims1/alpaca_150.jpg \
+    --obj_type 'alpaca' \
+    --kps_texts 'left eye' 'right eye' 'left ear' 'right ear' 'nose' 'throat' 'withers' 'tail' 'left-front leg' 'right-front leg' 'left-back leg' 'right-back leg' 'left-front knee' 'right-front knee' 'left-back knee' 'right-back knee' 'left-front paw' 'right-front paw' 'left-back paw' 'right-back paw' \
+    --skeleton 5 1 5 2 1 3 2 4 7 8 7 9 9 13 13 17 7 10 10 14 14 18 8 11 11 15 15 19 8 12 12 16 16 20 6 7 6 5 \
+    --object_detector locateanything
+```
+Given text prompts `left eye, right eye,..., right-back paw`, the detection results are:
+<img src="./assets/MO_example1_alpaca_150.jpg" width="100%">
+
+You can also switch the object detector to Grounding DINO by setting `--object_detector groundingdino`
+
+**Example 2: Detection on quadrupedal animals by object names**
+```
+python3 test_real_world/multi_obj_gkd_inference.py \
+    --cfg_file test_real_world/configs/gkd.yaml \
+    --checkpoint output/GKDT-L_for_app/model/gkd_fullset.best \
+    --input_im test_real_world/ims1/cat_dog.jpg \
+    --obj_type 'cat, dog' \
+    --object_detector locateanything
+```
+Given object names `cat, dog`, the the detection results are:
+<img src="./assets/MO_example2_cat_dog.jpg" width="100%">
 
 
+**Example 3: Detection on human pose (including real human, human sculptures, and paintings, etc.)**
+```
+python3 test_real_world/multi_obj_gkd_inference.py \
+    --cfg_file test_real_world/configs/gkd.yaml \
+    --checkpoint output/GKDT-L_for_app/model/gkd_fullset.best \
+    --input_im test_real_world/ims1/000000011511.jpg \
+    --obj_type 'human' \
+    --object_detector locateanything
+```
+Given the name `human`, the the detection results are:
+<img src="./assets/MO_example3_000000011511.jpg" width="100%">
+
+
+**Example 4: Detection on pigs for stock farming**
+```
+python3 test_real_world/multi_obj_gkd_inference.py \
+    --cfg_file test_real_world/configs/gkd.yaml \
+    --checkpoint output/GKDT-L_for_app/model/gkd_fullset.best \
+    --input_im test_real_world/ims1/pigs_stock_farming.jpg \
+    --obj_type 'pig' \
+    --object_detector locateanything
+```
+Given the name `pig`, the the detection results are:
+<img src="./assets/MO_example4_pigs_stock_farming.jpg" width="100%">
+
+
+
+**Example 5: Detection on hand keypoints on egocentric image (which may help for robot learning)**
+```
+python3 test_real_world/multi_obj_gkd_inference.py \
+    --cfg_file test_real_world/configs/gkd.yaml \
+    --checkpoint output/GKDT-L_for_app/model/gkd_fullset.best \
+    --input_im test_real_world/ims1/wash_dishes_egocentric.jpg \
+    --obj_type 'human_hand' \
+    --object_detector locateanything
+```
+Given the name `human_hand`, the the detection results are:
+<img src="./assets/MO_example5_wash_dishes_egocentric.jpg" width="100%">
+
+Note that the invisible keypoints are not shown as their confidence scores are low.
+
+
+
+**Example 6: Detection on birds**
+```
+python3 test_real_world/multi_obj_gkd_inference.py \
+    --cfg_file test_real_world/configs/gkd.yaml \
+    --checkpoint output/GKDT-L_for_app/model/gkd_fullset.best \
+    --input_im test_real_world/ims1/pet_birds.jpg \
+    --obj_type 'bird' \
+    --object_detector locateanything
+```
+Given the name `bird`, the the detection results are:
+<img src="./assets/MO_example6_pet_birds.jpg" width="100%">
+
+
+
+**Example 7: Detection on fishes**
+```
+python3 test_real_world/multi_obj_gkd_inference.py \
+    --cfg_file test_real_world/configs/gkd.yaml \
+    --checkpoint output/GKDT-L_for_app/model/gkd_fullset.best \
+    --input_im test_real_world/ims1/fish_swim.jpg \
+    --obj_type 'fish' \
+    --object_detector locateanything
+```
+Given the name `fish`, the the detection results are:
+<img src="./assets/MO_example7_fish_swim.jpg" width="100%">
 
 
 
