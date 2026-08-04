@@ -292,7 +292,7 @@ Given the name `human`, the the detection results are:
 <img src="./assets/MO_example3_000000011511.jpg" width="100%">
 
 
-**Example 4: Detection on pigs for stock farming**
+**Example 4: Detection on pigs for stock farming in agriculture**
 ```
 python3 test_real_world/multi_obj_gkd_inference.py \
     --cfg_file test_real_world/configs/gkd.yaml \
