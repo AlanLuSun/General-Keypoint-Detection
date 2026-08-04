@@ -119,7 +119,7 @@ def train_one_epoch(cfg, model: torch.nn.Module, loss_func, optimizer: torch.opt
                         )
         predict_heatmaps_list = outputs[0]  # [{'obj': tensor, 'text': tensor, 'image': tensor}, ...], a list of dict
         loss_v_t_align, loss_v_v_align, loss_t_t_align = outputs[1], outputs[2], outputs[3]  # a scalar
-        loss_align = summarize_losses([loss_v_t_align, loss_v_v_align, loss_t_t_align], cfg.LOSS.DOMAIN_ALIGNMENT.WEIGHT_ALIGN)
+        loss_align = None
         loss_main = compute_openkd_heatmap_loss(cfg, model, loss_func, query_labels, query_kp_mask,
                                             predict_heatmaps_list, support_kp_mask, kps_texts_mask)
         loss_weights = cfg.LOSS.WEIGHT_LOSS

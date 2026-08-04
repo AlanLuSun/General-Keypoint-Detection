@@ -8,6 +8,7 @@ sys.path.append('.')  # append pwd into system path so that it could find python
 print(os.getcwd())
 
 from test_real_world.predefined_keypoints import PREDEFINED_KEYPOINTS
+from test_real_world.predefined_keypoints import get_prompt_info
 from test_real_world.gkd_inference_lib.gkd_inference import GKDInference, demo
 from test_real_world.gkd_inference_lib.write_prediction_to_json import COCO_prediction_writer
 from test_real_world.gkd_inference_lib.visualize_keypoints import visualize_keypoints
@@ -44,22 +45,8 @@ def main():
     support_kps = args.support_kps  # list of kps for an image, e.g., [x1, y1, x2, y2...] or []
     skeleton = args.skeleton
 
-    # If obj_type is provided and no kps_texts given, use predefined keypoint texts for that object if available
-    if (obj_type != '') and (len(kps_texts) == 0):
-        if obj_type in PREDEFINED_KEYPOINTS:
-            kps_texts = PREDEFINED_KEYPOINTS[obj_type]['keypoints']
-            print(f'Found predefined keypoint texts for object type {obj_type}: {kps_texts}')
-        else:
-            print(f'No predefined keypoint texts for object type {obj_type}: {kps_texts}.')
-    
-    N_t = len(kps_texts)
-    if (support_im_path != '' and len(support_kps) > 0):
-        N_v = len(support_kps) // 2
-    else:
-        N_v = 0
-    assert (N_t > 0) or (N_v > 0), 'At least text prompt or visual prompt is provided.'
-    if (N_t > 0) and (N_v > 0):
-        assert N_v == N_t, 'For multimodal prompt, the number of visual prompts and textual prompts should be same.'
+    # N_t: number of keypoints from textual prompt, N_v: number of keypoints from visual prompt
+    kps_texts, skeleton, N_t, N_v = get_prompt_info(obj_type, kps_texts, support_im_path, support_kps, skeleton)
     
     # 1. Init GKDInference
     gkd_inference = GKDInference(cfg_file=args.cfg_file, checkpoint_path=args.checkpoint, opts=args.opts)

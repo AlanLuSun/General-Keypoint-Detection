@@ -5,13 +5,13 @@ import numpy as np
 
 import torch
 import torchvision.transforms as transforms
-from network.gkd_model import get_gkd_model
 from utils.utils import make_grid_images
 
 import copy
 import cv2
 from PIL import Image
 import test_real_world.gkd_inference_lib.transforms as mytransforms
+from test_real_world.gkd_inference_lib.gkd_model import get_gkd_model
 
 #======================================================================
 # Single-object General Keypoint Detection for Real-world Applications
@@ -325,6 +325,10 @@ def demo(model_infer: GKDInference, input_im_path: str, bbox_on_input_im: list=[
     predictions_o: N_bbox x N x 2 (each row is a point (x, y) in [0, image width]x[0, image height])
     predict_score: N_bbox x N (0~about 1)  
     '''
+    # Set status to avoid being out of GPU memory
+    model_infer.gkd_model.eval()  # affects BN & disable Dropout
+    torch.set_grad_enabled(False)  # disable grad computation
+
     # 1) Define preprocess functions to get ROI images with standard sizes (H x W = square_image_length x square_image_length)
     square_image_length = model_infer.square_image_length
     preprocess = mytransforms.Compose([

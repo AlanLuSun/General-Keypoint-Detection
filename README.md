@@ -1,4 +1,5 @@
 # General-Keypoint-Detection
+
 ## 1. Introduction
 - This is the source code implementation for the ECCV 2026 paper [GKDT: General Keypoint Detection Transformer](https://arxiv.org/pdf/2607.00752)
 - The major contributions of this work are in two aspects: 1) We present ***a powerful yet highly practical foundation model, called GKDT, to handle general keypoint detection***. GKDT supports visual prompt, text prompt, and both, enabling few-shot, zero-shot, and multimodal prompted detection. GKDT is open-world, thus it also supports continual learning on new categories. To our best knowledge, GKDT is the first DINOv3 based model for general keypoint detection (GKD); 2) We present ***a large-scale high-quality dataset MegaKPT that unifies 29 public datasets with over 1.3 million object instances*** for the research of general keypoint detection.
@@ -209,7 +210,7 @@ python3 test_real_world/single_obj_gkd_inference.py \
 </table>
 
 
-**Example 5: Detection by retrieving predefined names**
+**Example 5: Detection by using object name to retrieve predefined keypoint names**
 
 Detect keypoints on chair image
 ```
@@ -357,16 +358,69 @@ Given the name `fish`, the the detection results are:
 
 
 ## 5. MegaKPT Dataset
-
+For the preparation of MegaKPT dataset, please see [`MegaKPT/README_for_MegaKPT.md`](MegaKPT/README_for_MegaKPT.md)
 
 
 
 
 
 ## 6. Model Training and Evaluation
+### 6.1 GKD Model Training
+After preparing MegaKPT dataset, we are able to perform GKD training and evaluation. All the train \& val codes are in `main_gkd.py`.
+
+Firstly, please download [DINOv3 ViT models](https://github.com/facebookresearch/dinov3) to `/your/path/to/pretrained_models/dinov3/`. The folder layout is as follows:
+```
+|-- /your/path/to/pretrained_models/dinov3/
+|   |-- dinov3_vitl16_dinotxt_vision_head_and_text_encoder-a442d8f5.pth
+|   |-- pretrained_on_LVD-1689M/
+|   |   |-- dinov3_vits16_pretrain_lvd1689m-08c60483.pth
+|   |   |-- dinov3_vitb16_pretrain_lvd1689m-73cec8be.pth
+|   |   |-- dinov3_vitl16_pretrain_lvd1689m-8aa4cbdd.pth
+|   |   |-- dinov3_vith16plus_pretrain_lvd1689m-7c1da9a5.pth
+```
+
+Then, replace the DINOv3 weights root and dataset root to yours in `experiments/configs/gkd.yaml`. Our code also supports [CLIP visual/textual encoders](https://github.com/openai/CLIP), but you can ignore CLIP weights root if you use DINOv3. 
+
+***For one GPU training*** of large size of GKDT model, please run
+```
+python3 main_gkd.py --cfg_file experiments/configs/gkd.yaml \
+    OUTPUT_DIR output/GKDT-L_1GPU
+```
+Once it is successfully trained, you can find a model (i.e., `gkd.best`) appeared in folder `output/GKDT-L_1GPU/model` with the same name to the config file (i.e., `gkd.yaml`).
+
+You can set `TRAIN.NUM_ROLL_OUT` to adjust the number of episodes for training at a time, and `TRAIN.TEXT_PROMPT_SETTING.NUM_TEXT` and `TRAIN.NUM_TRAIN_SHOT` to be 1 or 0 to enable text, visual or multimodal prompted training. The mix-modal prompted training only has effect when both text prompts and visual prompts are available as it performs random masking one modality of prompts.
+
+***For distributed multi-GPU training***, we provide a slurm based script `experiments/study_archs/GKDT-L.sh`. Go to path `experiments/study_archs`, then change the related info (slurm partition, account, and paths of gkd environment) to yours and then simply run
+```
+sbatch -o GKDT-L.out GKDT-L.sh
+```
+
+### 6.2 GKD Evaluation
+To comprehensively evaluate the model performance on 22 tests, we provide eval scripts in `experiments/study_archs/eval_GKDT_L`. Please replace the related info to yours in scripts. One GPU is enough to perform evaluation!
+
+For 0-shot evaluation, simply run
+```
+bash eval_0shot.sh > eval_0shot.out &
+```
+If model is not found, please check if the model filename in `OUTPUT_DIR` (e.g., `gkd.best`) is consistent to the name of `CONFIG_FILE` (e.g., `gkd.yaml`).
+
+For 1-shot evaluation, simply run
+```
+bash eval_1shot.sh > eval_1shot.out &
+```
+
+For multimodal prompted evaluation, simply run
+```
+bash eval_1shot+text.sh > eval_1shot+text.out &
+```
+
+Once they are successfully evaluated, three files (`eval_0shot.out`, `eval_1shot.out`, `eval_1shot+text.out`) will be generated in the eval folder.
+
+We provide the `experiments/parse_result.py` to collect the results for 22 test sets. Please add the eval folder path to the `roots` list in `parse_result.py`, and simply run `python3 parse_result.py`, a table `all_results.csv` will be generated in eval folder.
 
 
 
+<!--### 6.2 Multi-Object GKD Evaluation-->
 
 
 

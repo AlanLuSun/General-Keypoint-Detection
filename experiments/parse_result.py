@@ -4,14 +4,14 @@ import csv
 
 def extract_accuracies_from_file(file_path, dataset_names):
     """
-    从输出文件中提取准确率信息
+    Extract accuracy information from the output file.
     
     Args:
-        file_path: 输出文件的完整路径
-        dataset_names: 数据集名称列表
+        file_path: Full path to the output file.
+        dataset_names: List of dataset names.
     
     Returns:
-        list: 包含准确率数值的列表
+        list: A list of accuracy values.
     """
     accuracies = []
     
@@ -19,106 +19,106 @@ def extract_accuracies_from_file(file_path, dataset_names):
         with open(file_path, 'r', encoding='utf-8') as file:
             content = file.read()
             
-            # 使用正则表达式匹配所有符合条件的结果行
+            # Use regex to match all qualifying result lines
             pattern = r'episode 1000/1000, Acc \[([0-9.]+)\]'
             matches = re.findall(pattern, content)
             
-            # 只取前23个匹配结果（对应23个数据集）
+            # Only take the first 23 matches (corresponding to 23 datasets)
             matches = matches[:23]
             
             if len(matches) != len(dataset_names):
-                print(f"警告: 在文件 {file_path} 中找到 {len(matches)} 个结果，但期望 {len(dataset_names)} 个数据集")
+                print(f"Warning: found {len(matches)} results in {file_path}, but expected {len(dataset_names)} datasets")
             
-            # 处理每个匹配结果
+            # Process each matched result
             for i, match in enumerate(matches):
                 if i < len(dataset_names):
                     acc_value = float(match)
-                    # 转换为百分比，保留两位小数，四舍五入
+                    # Convert to percentage with two decimal places, rounded
                     acc_percent = round(acc_value * 100, 2)
                     accuracies.append(acc_percent)
                 else:
                     break
                     
     except FileNotFoundError:
-        print(f"错误: 文件 {file_path} 不存在")
+        print(f"Error: file {file_path} does not exist")
     except Exception as e:
-        print(f"处理文件 {file_path} 时出错: {e}")
+        print(f"Error processing file {file_path}: {e}")
     
     return accuracies
 
 def save_results_to_csv(all_results, output_file_path, dataset_names, filenames):
     """
-    将所有结果保存为CSV文件（横向排版）
+    Save all results to a CSV file (horizontal layout).
     
     Args:
-        all_results: 所有文件的结果列表，每个元素是一个准确率列表
-        output_file_path: 输出文件路径
-        dataset_names: 数据集名称列表
-        filenames: 文件名列表
+        all_results: List of results for all files, where each element is an accuracy list.
+        output_file_path: Output file path.
+        dataset_names: List of dataset names.
+        filenames: List of filenames.
     """
     try:
         with open(output_file_path, 'w', newline='', encoding='utf-8') as csvfile:
             writer = csv.writer(csvfile)
             
-            # 写入表头：第一列是文件名，后面是数据集名称
+            # Write header: filename in the first column, followed by dataset names
             header = ['Filename'] + dataset_names
             writer.writerow(header)
             
-            # 写入数据行
+            # Write data rows
             for i, (filename, accuracies) in enumerate(all_results):
                 if len(accuracies) == len(dataset_names):
                     row = [filename] + accuracies
                     writer.writerow(row)
                 else:
-                    print(f"警告: 文件 {filename} 的结果数量不匹配，跳过")
+                    print(f"Warning: the number of results for file {filename} does not match, skipping")
         
-        print(f"CSV结果已保存到: {output_file_path}")
+        print(f"CSV results saved to: {output_file_path}")
         
     except Exception as e:
-        print(f"保存CSV文件时出错: {e}")
+        print(f"Error saving CSV file: {e}")
 
 def process_eval_files(root_dir, filenames, dataset_names):
     """
-    处理所有评估文件并生成横向排版的CSV
+    Process all evaluation files and generate a horizontally formatted CSV.
     
     Args:
-        root_dir: 根目录路径
-        filenames: 文件名列表
-        dataset_names: 数据集名称列表
+        root_dir: Root directory path.
+        filenames: List of filenames.
+        dataset_names: List of dataset names.
     """
-    all_results = []  # 存储所有文件的结果
+    all_results = []  # Store all file results
     
     for filename in filenames:
         file_path = os.path.join(root_dir, filename)
         
         if not os.path.exists(file_path):
-            print(f"文件不存在: {file_path}")
+            print(f"File does not exist: {file_path}")
             continue
         
-        print(f"正在处理文件: {filename}")
+        print(f"Processing file: {filename}")
         
-        # 提取准确率信息
+        # Extract accuracy information
         accuracies = extract_accuracies_from_file(file_path, dataset_names)
         
         if accuracies:
             all_results.append((filename, accuracies))
             
-            # 在控制台显示单个文件的结果
-            print(f"{filename} 的处理结果:")
+            # Display the result for this file in the console
+            print(f"Results for {filename}:")
             for j, dataset_name in enumerate(dataset_names):
                 if j < len(accuracies):
                     print(f"  {dataset_name}: {accuracies[j]:.2f}%")
             print()
         else:
-            print(f"在文件 {filename} 中未找到有效结果\n")
+            print(f"No valid results found in file {filename}\n")
     
-    # 如果有结果，保存到CSV文件
+    # If there are results, save to a CSV file
     if all_results:
         output_file_path = os.path.join(root_dir, "all_results.csv")
         save_results_to_csv(all_results, output_file_path, dataset_names, filenames)
         
-        # 显示CSV内容预览
-        print("\nCSV文件内容预览:")
+        # Display a preview of the CSV contents
+        print("\nCSV content preview:")
         print("Filename", end="")
         for name in dataset_names:
             print(f",{name}", end="")
@@ -130,19 +130,19 @@ def process_eval_files(root_dir, filenames, dataset_names):
                 print(f",{acc:.2f}", end="")
             print()
     else:
-        print("没有找到任何有效结果")
+        print("No valid results were found")
 
-# 使用示例
+# Example usage
 if __name__ == "__main__":
-    # 配置参数
+    # Configure parameters
     roots = [
-        "/project/vonneumann1/cl2025/GKD/experiments/gkd_ablation/study_kg/eval_kg_blk2_retest",
+        "/your/path/to/General-Keypoint-Detection/experiments/study_archs/eval_GKDT_L",
     ]
     
     filenames = [ "eval_1shot.out", "eval_0shot.out", "eval_1shot+text.out"]
     # filenames = [ "eval_1shot+text.out"]
     
-    # 数据集名称列表作为参数传入
+    # Dataset name list passed as a parameter (22 test sets + 1 additional novel set)
     dataset_names = [
         "Animal pose", "AwA", "CUB", "NAB", "ap10k test", 
         "vinegar fly", "locust", "topviewmouse5k", "macaque", 
@@ -152,7 +152,7 @@ if __name__ == "__main__":
         "hand xray (base kp)", "hand xray (novel kp)"
     ]
     
-    # 处理文件，传入数据集名称列表
+    # Process files with the dataset name list passed in
     for i, each_root in enumerate(roots):
         print(f"==>root {i}: {each_root}")
         process_eval_files(each_root, filenames, dataset_names)

@@ -2172,7 +2172,32 @@ PREDEFINED_KEYPOINTS = {'coco': {'keypoints': ['nose',
                                           'cephalometric_landmark_18',
                                           'cephalometric_landmark_19'],
                             'skeleton': []},
- 'hand_xray': {'keypoints': ['styloid_process_of_ulna',
+ 'hand_xray': {'keypoints': ["pinky_finger's root",
+                             "ring_finger's root",
+                             "middle_finger's root",
+                             "forefinger's root",
+                             'thumb_root',
+                             "thumb's first knuckle",
+                             "thumb's second knuckle",
+                             "thumb's tip",
+                             "forefinger's first knuckle",
+                             "forefinger's second knuckle",
+                             "forefinger's third knuckle",
+                             "forefinger's tip",
+                             "middle_finger's first knuckle",
+                             "middle_finger's second knuckle",
+                             "middle_finger's third knuckle",
+                             "middle_finger's tip",
+                             "ring_finger's first knuckle",
+                             "ring_finger's second knuckle",
+                             "ring_finger's third knuckle",
+                             "ring_finger's tip",
+                             "pinky_finger's first knuckle",
+                             "pinky_finger's second knuckle",
+                             "pinky_finger's third knuckle",
+                             "pinky_finger's tip"],
+               'skeleton': []},
+ 'hand_xray_full': {'keypoints': ['styloid_process_of_ulna',
                              'Pisiform_bone',
                              'Distal_radio_ulnar_joint',
                              'Distal_radio_radius_joint',
@@ -2213,9 +2238,11 @@ PREDEFINED_KEYPOINTS = {'coco': {'keypoints': ['nose',
 
 # Each concrete COCO category is an alias to its exact schema above.
 _CATEGORY_TO_SCHEMA = {'person': 'coco',
+ 'human': 'coco',
  'human_face_68_landmarks': 'human_face_300w',
  'human_face_21_landmarks': 'human_face_aflw',
  'human_hand': 'onehand10k',
+ 'hand': 'onehand10k',
  'cat': 'animal_pose_dataset',
  'dog': 'animal_pose_dataset',
  'cow': 'animal_pose_dataset',
@@ -3392,7 +3419,7 @@ _CATEGORY_TO_SCHEMA = {'person': 'coco',
  'vest_dress': 'deepfashion2_train__schema_12',
  'sling_dress': 'deepfashion2_train__schema_13',
  'cephalometric_landmark': 'cephalometric_landmark',
- 'hand_xray': 'hand_xray'}
+ 'hand x-ray': 'hand_xray'}
 
 # Add all concrete object-category names without overwriting dataset-name entries.
 for _category_name, _schema_name in _CATEGORY_TO_SCHEMA.items():
@@ -3406,7 +3433,7 @@ def get_predefined_keypoints(object_name):
     if schema is None:
         normalized_name = object_name.casefold()
         for known_name, known_schema in PREDEFINED_KEYPOINTS.items():
-            if known_name.casefold() == normalized_name:
+            if normalized_name in known_name.casefold():  # if known_name contains normalized_name
                 schema = known_schema
                 break
     return deepcopy(schema) if schema is not None else None
@@ -3424,7 +3451,7 @@ def get_prompt_info(object_name, kps_texts, support_im_path, support_kps, skelet
     N_t = len(kps_texts)
     N_v = len(support_kps) // 2 if support_im_path and support_kps else 0
 
-    if N_t == 0 and N_v == 0 and object_name != 'object1':
+    if (N_t == 0) and (N_v == 0) and (object_name != '') and (object_name != 'object1'):
         predefined_schema = get_predefined_keypoints(object_name)
         if predefined_schema is not None:
             kps_texts = predefined_schema['keypoints']
