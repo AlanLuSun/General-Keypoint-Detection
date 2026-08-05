@@ -366,7 +366,7 @@ For the preparation of MegaKPT dataset, please see [`MegaKPT/README_for_MegaKPT.
 
 ## 6. Model Training and Evaluation
 ### 6.1 GKD Model Training
-After preparing MegaKPT dataset, we are able to perform GKD training and evaluation. All the train \& val codes are in `main_gkd.py`.
+After preparing MegaKPT dataset, please check `datasets/dataset_meta_info.py` where defines the relative paths of image root and annotation root of each dataset. If they are correct, then we are able to perform GKD training and evaluation. All the train \& val codes are in `main_gkd.py`.
 
 Firstly, please download [DINOv3 ViT models](https://github.com/facebookresearch/dinov3) to `/your/path/to/pretrained_models/dinov3/`. The folder layout is as follows:
 ```
@@ -419,21 +419,41 @@ Once they are successfully evaluated, three files (`eval_0shot.out`, `eval_1shot
 We provide the `experiments/parse_result.py` to collect the results for 22 test sets. Please add the eval folder path to the `roots` list in `parse_result.py`, and simply run `python3 parse_result.py`, a table `all_results.csv` will be generated in eval folder.
 
 
+### 6.3 Multi-Object GKD Evaluation
+To evaluate multi-object bechmarks, we firstly use an off-the-shelf object detector to detect the bounding boxes of object instances, and then store these results into a COCO-format json file. Next, our GKDT loads this json file and detects the keypoints for each object instance, where the detected keypoints will update this json file, yielding the final results. This fashion follows top-down detection, with the advantage of achieving better scores if using more advanced object detector.
 
+For evaluation of multi-human pose estimation in COCO and HumanArt:
+- If using ground-truth bounding box, please see the examples in `expert_benchmark/evaluation`
+- If using the detection results from Grounding DINO, simply place the resultant json file in the same root to the GT annotations, and then change the json filename in input parameter `DATASET.TEST_DATA`. Please see the example `more_investigate/top_down_get_GKD_json_results/eval_coco.sh`.
 
-
-<!--### 6.2 Multi-Object GKD Evaluation-->
-
-
-
-
-
-<!--### 6.3 Continual Learning on Your Dataset-->
+For evaluation of animals and vehicle in multi-object scenario, please see examples in `more_investigate/top_down_get_GKD_json_results`.
 
 
 
 
-## 7. Citation
+## 7. Continual Learning on Your Dataset
+The continual learning on new dataset is very easy:
+
+Step 1: Prepare your COCO-format dataset
+
+Step 2: Register your dataset name and relative paths of image root and annotation root in `datasets/dataset_meta_info.py`, like as follows:
+```
+'carfusion': {
+        'image_root': 'vehicle/carfusion/images',
+        'anno_root': 'vehicle/carfusion/annotations'
+    },
+```
+
+Step 3: Add one row to `DATASET.TRAIN_DATA` in config file `gkd.yaml` like as follows
+```
+- ['carfusion', 'car_keypoints_train.json', [], []]
+``` 
+
+After finishing above steps, the new data will be added into GKD training.
+
+
+
+## 8. Citation
 ```
 @inproceedings{lu2026gkdt,
   title={GKDT: General Keypoint Detection Transformer},
