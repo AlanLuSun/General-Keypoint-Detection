@@ -5,7 +5,7 @@ import re
 
 from PIL import Image
 
-from test_real_world.object_detor_lib.locateanything_worker import LocateAnythingWorker
+from test_real_world.object_detector_lib.locateanything_worker import LocateAnythingWorker
 
 
 _OBJECT_DETECTOR_ROOT = os.path.dirname(os.path.abspath(__file__))

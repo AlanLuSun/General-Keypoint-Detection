@@ -11,8 +11,8 @@ from test_real_world.predefined_keypoints import get_prompt_info
 from test_real_world.gkd_inference_lib.gkd_inference import GKDInference, demo
 from test_real_world.gkd_inference_lib.write_prediction_to_json import COCO_prediction_writer
 from test_real_world.gkd_inference_lib.visualize_keypoints import visualize_keypoints
-from test_real_world.object_detor_lib.grounding_dino_detector import GroundingDINODetector
-from test_real_world.object_detor_lib.locateanything_detector import LocateAnythingDetector
+from test_real_world.object_detector_lib.grounding_dino_detector import GroundingDINODetector
+from test_real_world.object_detector_lib.locateanything_detector import LocateAnythingDetector
 
 import time
 

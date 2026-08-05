@@ -72,7 +72,7 @@ Assume the path of current working directory is `General-Keypoint-Detection/`:
 
 - Download the [GKDT-L model](https://huggingface.co/changshenglu/GKDT-L_for_App/tree/main) and put it to `output/GKDT-L_for_app/model/gkd_fullset.best`
 
-- Go to folder `test_real_world/object_detor_lib/weights`, and then download open-set object detectors [Grounding DINO](https://github.com/idea-research/groundingdino) and [Locate Anything](https://github.com/NVlabs/Eagle/tree/main/Embodied) by
+- Go to folder `test_real_world/object_detector_lib/weights`, and then download open-set object detectors [Grounding DINO](https://github.com/idea-research/groundingdino) and [Locate Anything](https://github.com/NVlabs/Eagle/tree/main/Embodied) by
 ```
 wget -q https://github.com/IDEA-Research/GroundingDINO/releases/download/v0.1.0-alpha/groundingdino_swint_ogc.pth
 git lfs install
@@ -97,7 +97,7 @@ Now the project layout should look like as follows:
 |   |-- test_real_world/
 |   |   |-- configs/
 |   |   |-- gkd_inference_lib/
-|   |   |-- object_detor_lib/
+|   |   |-- object_detector_lib/
 |   |   |   |-- groundingdino/
 |   |   |   |-- weights/
 |   |   |   |   |-- LocateAnything-3B
@@ -402,7 +402,7 @@ For 0-shot evaluation, simply run
 ```
 bash eval_0shot.sh > eval_0shot.out &
 ```
-If model is not found, please check if the model filename in `OUTPUT_DIR` (e.g., `gkd.best`) is consistent to the name of `CONFIG_FILE` (e.g., `gkd.yaml`).
+If model is not found, please check if the model filename (e.g., `gkd.best`) in `OUTPUT_DIR` is consistent to the name of `CONFIG_FILE` (e.g., `gkd.yaml`).
 
 For 1-shot evaluation, simply run
 ```
@@ -420,7 +420,16 @@ We provide the `experiments/parse_result.py` to collect the results for 22 test 
 
 
 
+
+
 <!--### 6.2 Multi-Object GKD Evaluation-->
+
+
+
+
+
+<!--### 6.3 Continual Learning on Your Dataset-->
+
 
 
 
