@@ -1,5 +1,18 @@
 # General-Keypoint-Detection
 
+## Table of Contents
+- [1. Introduction](#1-introduction)
+- [2. Released GKDT Models](#2-released-gkdt-models)
+- [3. Environment Setup](#3-environment-setup)
+- [4. Real-World Testing & Applications](#4-real-world-testing--applications)
+  - [4.1 Download Models](#41-download-models)
+  - [4.2 Single-Object General Keypoint Detection](#42-single-object-general-keypoint-detection)
+  - [4.3 Multi-Object General Keypoint Detection](#43-multi-object-general-keypoint-detection)
+- [5. MegaKPT Dataset](#5-megakpt-dataset)
+- [6. Model Training and Evaluation](#6-model-training-and-evaluation)
+- [7. Continual Learning on Your Dataset](#7-continual-learning-on-your-dataset)
+- [8. Citation](#8-citation)
+
 ## 1. Introduction
 - This is the source code implementation for the ECCV 2026 paper [GKDT: General Keypoint Detection Transformer](https://arxiv.org/pdf/2607.00752)
 - The major contributions of this work are in two aspects: 1) We present ***a powerful yet highly practical foundation model, called GKDT, for general keypoint detection with state-of-the-art performance***. GKDT supports visual prompt, text prompt, and both, enabling few-shot, zero-shot, and multimodal prompted detection. GKDT is open-world, thus it also supports continual learning on new categories. To our best knowledge, GKDT is the first DINOv3 based model for general keypoint detection (GKD); 2) We present ***a large-scale high-quality dataset MegaKPT that unifies 29 public datasets with over 1.3 million object instances*** for the research of general keypoint detection.
