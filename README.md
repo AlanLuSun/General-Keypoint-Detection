@@ -11,14 +11,12 @@
 - [5. MegaKPT Dataset](#5-megakpt-dataset)
 - [6. Model Training and Evaluation](#6-model-training-and-evaluation)
 - [7. Continual Learning on Your Dataset](#7-continual-learning-on-your-dataset)
-- [8. Citation](#8-citation)
+- [8. License](#8-license)
+- [9. Citation](#9-citation)
 
 ## 1. Introduction
 - This is the source code implementation for the ECCV 2026 paper [GKDT: General Keypoint Detection Transformer](https://arxiv.org/pdf/2607.00752)
 - The major contributions of this work are in two aspects: 1) We present ***a powerful yet highly practical foundation model, called GKDT, for general keypoint detection with state-of-the-art performance***. GKDT supports visual prompt, text prompt, and both, enabling few-shot, zero-shot, and multimodal prompted detection. GKDT is open-world, thus it also supports continual learning on new categories. To our best knowledge, GKDT is the first DINOv3 based model for general keypoint detection (GKD); 2) We present ***a large-scale high-quality dataset MegaKPT that unifies 29 public datasets with over 1.3 million object instances*** for the research of general keypoint detection.
-- The source codes, models, and dataset are free for academic research, while commercial use is prohibited. Please cite our paper if you find them helpful, thank you!
-
-<!-- # We are working on releasing the dataset, models, and codes. We will release them within 1~2 weeks. Thanks for your patience and stay tuned! (2026.07.15) -->
 
 
 ## 2. Released GKDT Models
@@ -465,8 +463,12 @@ Step 3: Add one row to `DATASET.TRAIN_DATA` in config file `gkd.yaml` like as fo
 After finishing above steps, the new data will be added into GKD training.
 
 
+## 8. License
+The source codes, models, and dataset are free for academic research and educational purposes, while commercial use is prohibited.
 
-## 8. Citation
+
+## 9. Citation
+If you find our work helpful, please give us a star and cite our paper, thank you!
 ```
 @inproceedings{lu2026gkdt,
   title={GKDT: General Keypoint Detection Transformer},

@@ -91,3 +91,32 @@ We credit each dataset source. The statistics of MegaKPT are as follows:
 
 ## 3. License
 We do not own the copyrights to these images. Their use is restricted to non-commercial research and educational purposes.
+
+
+## 4. Citation
+If you find our work helpful, please give us a star and cite our paper, thank you!
+```
+@inproceedings{lu2026gkdt,
+  title={GKDT: General Keypoint Detection Transformer},
+  author={Lu, Changsheng and Chen, Yuxin and Gui, Haokun and Wang, Rong and Yang, Jie and Yang, Harry and Hengel, Anton van den and Jia, Jiaya},
+  booktitle={European Conference on Computer Vision},
+  year={2026},
+  organization={Springer}
+}
+@inproceedings{lu2024openkd,
+  title={Openkd: Opening prompt diversity for zero-and few-shot keypoint detection},
+  author={Lu, Changsheng and Liu, Zheyuan and Koniusz, Piotr},
+  booktitle={European Conference on Computer Vision},
+  pages={148--165},
+  year={2024},
+  organization={Springer}
+}
+@inproceedings{lu2022few,
+  title={Few-shot keypoint detection with uncertainty learning for unseen species},
+  author={Lu, Changsheng and Koniusz, Piotr},
+  booktitle={2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages={19394--19404},
+  year={2022},
+  organization={IEEE}
+}
+```
