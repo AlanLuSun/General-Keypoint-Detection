@@ -2,6 +2,7 @@ import os
 import argparse
 from yacs.config import CfgNode
 import numpy as np
+import torch
 
 import sys
 sys.path.append('.')  # append pwd into system path so that it could find python modules
@@ -56,7 +57,6 @@ def main():
         raise ValueError('--skeleton must contain an even number of values.')
 
     time_pre = time.time()
-
     # With no object name, demo() receives an empty ROI list and uses the whole
     # image. Otherwise every requested class is detected automatically.
     detection_entries = []
@@ -91,7 +91,10 @@ def main():
         print(f'Using {len(detection_entries)} detected ROI boxes for GKD.')
     else:
         print('No --obj_type supplied; using the whole image as one GKD ROI.')
-    
+
+    # clean up GPU memory after objection detection
+    torch.cuda.empty_cache()
+
     # 1. Init GKDInference
     gkd_inference = GKDInference(cfg_file=args.cfg_file, checkpoint_path=args.checkpoint, opts=args.opts)
 

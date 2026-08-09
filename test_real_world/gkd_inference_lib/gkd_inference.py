@@ -91,8 +91,9 @@ class GKDInference(object):
         # Load model
         self.gkd_model = get_gkd_model(self.cfg)
         if os.path.exists(checkpoint_path):
-            checkpoint = torch.load(checkpoint_path)  
+            checkpoint = torch.load(checkpoint_path, map_location='cpu')  
             self.gkd_model.load_state_dict(checkpoint['model'])
+            del checkpoint
             print("==>Checkpoint loaded: '{}'".format(checkpoint_path))
         else:
             print("==>Checkpoint not found: '{}'".format(checkpoint_path))

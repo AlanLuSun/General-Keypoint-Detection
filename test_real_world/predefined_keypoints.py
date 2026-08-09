@@ -11,6 +11,7 @@ from copy import deepcopy
 
 
 # Dataset schemas plus additional per-dataset schemas for heterogeneous datasets.
+# All names should be in lowercase
 PREDEFINED_KEYPOINTS = {'coco': {'keypoints': ['nose',
                               'left_eye',
                               'right_eye',
@@ -3428,9 +3429,15 @@ for _category_name, _schema_name in _CATEGORY_TO_SCHEMA.items():
 
 def get_predefined_keypoints(object_name):
     """Return a copy of the schema for an object or dataset name, if known."""
-    object_name = object_name.strip()
+    object_name = object_name.strip().lower()
     schema = PREDEFINED_KEYPOINTS.get(object_name)
-    if schema is None:
+    if schema is None:  # trial 1
+        object_name_with_subscript = object_name.replace(' ', '_')
+        schema = PREDEFINED_KEYPOINTS.get(object_name_with_subscript)
+    if schema is None:  # trial 2
+        object_name_with_whitespace = object_name.replace('_', ' ')
+        schema = PREDEFINED_KEYPOINTS.get(object_name_with_whitespace)
+    if schema is None:  # trial 3, matching a substring
         normalized_name = object_name.casefold()
         for known_name, known_schema in PREDEFINED_KEYPOINTS.items():
             if normalized_name in known_name.casefold():  # if known_name contains normalized_name
