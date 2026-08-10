@@ -87,6 +87,7 @@ Assume the path of current working directory is `General-Keypoint-Detection/`:
 git lfs install
 git clone https://huggingface.co/changshenglu/GKDT-L_for_App
 ```
+
 - Go to folder `test_real_world/object_detector_lib/weights`, and then download open-set object detectors [Grounding DINO](https://github.com/idea-research/groundingdino) and [Locate Anything](https://github.com/NVlabs/Eagle/tree/main/Embodied) by
 ```
 wget -q https://github.com/IDEA-Research/GroundingDINO/releases/download/v0.1.0-alpha/groundingdino_swint_ogc.pth
