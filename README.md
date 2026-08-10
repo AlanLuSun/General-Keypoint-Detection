@@ -82,12 +82,14 @@ If you met `ModuleNotFoundError: No module named 'pkg_resources'`, lower setupto
 ### 4.1 Download Models
 Assume the path of current working directory is `General-Keypoint-Detection/`:
 
-- Download the [GKDT-L model](https://huggingface.co/changshenglu/GKDT-L_for_App/tree/main) and put it to `output/GKDT-L_for_app/model/gkd_fullset.best`
-
+- Download the [GKDT-L model](https://huggingface.co/changshenglu/GKDT-L_for_App/tree/main) and put the model file to `output/GKDT-L_for_app/model/gkd_fullset.best`
+```
+git lfs install
+git clone https://huggingface.co/changshenglu/GKDT-L_for_App
+```
 - Go to folder `test_real_world/object_detector_lib/weights`, and then download open-set object detectors [Grounding DINO](https://github.com/idea-research/groundingdino) and [Locate Anything](https://github.com/NVlabs/Eagle/tree/main/Embodied) by
 ```
 wget -q https://github.com/IDEA-Research/GroundingDINO/releases/download/v0.1.0-alpha/groundingdino_swint_ogc.pth
-git lfs install
 git clone https://huggingface.co/nvidia/LocateAnything-3B
 ```
 Note that object detectors are only used in multi-object GKD scenario. If you only do single-object GKD, object detectors are no need to download.
