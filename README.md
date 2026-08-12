@@ -17,7 +17,7 @@
 ## 1. Introduction
 - This is the source code implementation for the ECCV 2026 paper [GKDT: General Keypoint Detection Transformer](https://arxiv.org/pdf/2607.00752)
 - The major contributions of this work are in two aspects: 1) We present ***a powerful yet highly practical foundation model, called GKDT, for general keypoint detection with state-of-the-art performance***. GKDT supports visual prompt, text prompt, and both, enabling few-shot, zero-shot, and multimodal prompted detection. GKDT is open-world, thus it also supports continual learning on new categories. To our best knowledge, GKDT is the first DINOv3 based model for general keypoint detection (GKD); 2) We present ***a large-scale high-quality dataset MegaKPT that unifies 29 public datasets with over 1.3 million object instances*** for the research of general keypoint detection.
-- This repository is the first one with codes, models, and dataset completely open-source in the field of general keypoint detection.
+- This repository is the first one with codes, models, and dataset completely open-source in the field of general keypoint detection. To see how our GKDT works, please try our [huggingface demo](https://huggingface.co/spaces/changshenglu/GKD-demo).
 
 
 ## 2. Released GKDT Models
