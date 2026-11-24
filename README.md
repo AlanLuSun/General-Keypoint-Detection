@@ -481,6 +481,9 @@ If you find our work helpful, please give us a star and cite our paper, thank yo
   year={2026},
   organization={Springer}
 }
+```
+You are also welcome to our other works on zero-/few-shot keypoint detection:
+```
 @inproceedings{lu2024openkd,
   title={Openkd: Opening prompt diversity for zero-and few-shot keypoint detection},
   author={Lu, Changsheng and Liu, Zheyuan and Koniusz, Piotr},
@@ -496,5 +499,21 @@ If you find our work helpful, please give us a star and cite our paper, thank yo
   pages={19394--19404},
   year={2022},
   organization={IEEE}
+}
+@inproceedings{lu2024detect,
+  title={Detect any keypoints: An efficient light-weight few-shot keypoint detector},
+  author={Lu, Changsheng and Koniusz, Piotr},
+  booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
+  volume={38},
+  number={4},
+  pages={3882--3890},
+  year={2024}
+}
+@inproceedings{lu2025exploiting,
+  title={Exploiting Class-agnostic Visual Prior for Few-shot Keypoint Detection},
+  author={Lu, Changsheng and Zhu, Hao and Koniusz, Piotr},
+  booktitle={International Journal of Computer Vision},
+  pages={19416--19426},
+  year={2025}
 }
 ```
